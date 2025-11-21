@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>당신 집에서 잘 수 있나요? | Travel Vibe Test</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -16,21 +16,21 @@
         body {
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
             background-color: #fff;
-            overflow: hidden;
+            /* Prevent pull-to-refresh on mobile */
+            overscroll-behavior: none; 
         }
         .handwriting {
             font-family: 'Gaegu', cursive;
         }
         
-        /* Soft Gradient Animation - Ultra Light Pastel Mix */
+        /* Soft Gradient Animation */
         @keyframes soft-gradient {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
         .animate-gradient-bg {
-            /* Very pale pink, blue, purple, cream */
-            background: linear-gradient(-45deg, #fff1f2, #fdf4ff, #f0f9ff, #f0fdf4, #fffbeb);
+            background: linear-gradient(-45deg, #ffe4e6, #fae8ff, #e0f2fe, #dcfce7, #fef3c7);
             background-size: 300% 300%;
             animation: soft-gradient 20s ease infinite;
         }
@@ -54,12 +54,28 @@
         /* Custom Scrollbar */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Mobile Hover Fix: Only apply hover effects on devices that support hover (mouse) */
+        @media (hover: hover) {
+            .hover-action:hover {
+                background-color: rgba(240, 249, 255, 0.5); /* sky-50/50 */
+                border-color: #bae6fd; /* sky-200 */
+                transform: translateY(-2px);
+            }
+        }
+        /* Active state for touch feedback */
+        .hover-action:active {
+            background-color: #f0f9ff; /* sky-50 */
+            border-color: #38bdf8; /* sky-400 */
+            transform: scale(0.99);
+        }
     </style>
 </head>
-<body class="h-screen flex justify-center items-center relative text-slate-800 animate-gradient-bg">
+<!-- Changed h-screen to h-[100dvh] for better mobile support -->
+<body class="h-[100dvh] w-full flex justify-center items-center relative text-slate-800 animate-gradient-bg overflow-hidden">
     
     <!-- Mobile Container -->
-    <div id="root" class="relative z-10 w-full max-w-[420px] h-full sm:h-[90vh] sm:max-h-[850px] sm:rounded-[32px] bg-white/60 backdrop-blur-xl overflow-hidden flex flex-col sm:border-[8px] sm:border-white/40 sm:shadow-2xl"></div>
+    <div id="root" class="relative z-10 w-full max-w-[420px] h-full sm:h-[90vh] sm:max-h-[850px] sm:rounded-[32px] bg-white/50 backdrop-blur-xl overflow-hidden flex flex-col sm:border-[8px] sm:border-white/40 sm:shadow-2xl"></div>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
@@ -68,11 +84,11 @@
         const questions = [
             {
                 id: 1,
-                question: "내일은 드디어 리스본으로 떠나는 날! ✈️ 짐 싸는 내 모습은?",
+                question: "내일은 드디어 여행지로 떠나는 날! ✈️ 짐 싸는 내 모습은?",
                 options: [
-                    { text: "일주일 전부터 준비 완료! 파우치별로 완벽하게 분류해둠", traits: { J: 2 } },
-                    { text: "음... 여권이랑 지갑만 있으면 되는 거 아냐? (전날 밤에 쌈)", traits: { P: 2 } },
-                    { text: "가서 입을 옷이 제일 중요해! 혼자만의 패션쇼 개최 👗", traits: { E: 1, S: 1 } },
+                    { text: "일주일 전부터 준비 완료! 이미 완벽하게 분류해 둠", traits: { J: 2 } },
+                    { text: "음... 여권이랑 지갑만 있으면 되는 거 아냐?", traits: { P: 2 } },
+                    { text: "가서 입을 옷이 제일 중요해! 혼자만의 패션쇼 개최", traits: { E: 1, S: 1 } },
                     { text: "비행기에서 읽을 책, 일기장, 필름 카메라부터 챙김", traits: { I: 1, N: 1 } }
                 ]
             },
@@ -80,20 +96,20 @@
                 id: 2,
                 question: "공항 도착! 😱 제작진이 스마트폰을 걷어간다고 한다면?",
                 options: [
-                    { text: "헐 말도 안 돼! (마지막 1초까지 친구들에게 카톡 보냄)", traits: { E: 2 } },
-                    { text: "오히려 좋아. 디지털 디톡스하고 나만의 시간에 집중할래.", traits: { I: 2, N: 1 } },
-                    { text: "비상금이나 지도 같은 현실적인 문제부터 걱정됨.", traits: { S: 2, J: 1 } },
-                    { text: "재밌겠다! 진짜 리얼 예능 찍는 기분인걸?", traits: { P: 1, E: 1 } }
+                    { text: "헐 말도 안 돼! 마지막까지 친구들에게 카톡 보냄", traits: { E: 2 } },
+                    { text: "오히려 좋아 나만의 시간에 집중할래", traits: { I: 2, N: 1 } },
+                    { text: "비상금이나 지도 같은 현실적인 문제부터 걱정됨", traits: { S: 2, J: 1 } },
+                    { text: "재미있겠다! 진짜 리얼 예능 찍는 기분인걸?", traits: { P: 1, E: 1 } }
                 ]
             },
             {
                 id: 3,
                 question: "숙소로 가는 길, 낡은 지도를 봐도 도무지 길을 모르겠다...",
                 options: [
-                    { text: "지나가는 현지인 붙잡고 바로 물어본다. \"Ola! Help!\"", traits: { E: 2 } },
-                    { text: "일단 직진해봐! 길 잃는 것도 여행의 묘미지 🎵", traits: { P: 2, N: 1 } },
-                    { text: "침착하게 표지판과 태양의 위치(?)를 분석해 본다.", traits: { T: 1, J: 1 } },
-                    { text: "조용히 뒤따라가며 풍경 사진을 찍는다. (누군가 찾겠지...)", traits: { I: 2 } }
+                    { text: "지나가는 현지인 붙잡고 바로 물어본다 Ola! Help!", traits: { E: 2 } },
+                    { text: "일단 직진해 봐! 길 잃는 것도 여행의 묘미지 🎵", traits: { P: 2, N: 1 } },
+                    { text: "침착하게 표지판과 태양의 위치(?)를 분석해 본다", traits: { T: 1, J: 1 } },
+                    { text: "조용히 뒤따라가며 풍경 사진을 찍는다 (누군가 찾겠지...)", traits: { I: 2 } }
                 ]
             },
             {
@@ -101,8 +117,8 @@
                 question: "드디어 8명이 다 모였다! 첫 저녁 식사 자리에서의 나는?",
                 options: [
                     { text: "MC 모드 발동! 분위기 띄우고 질문 던지느라 바쁨", traits: { E: 2 } },
-                    { text: "옆 사람 챙겨주고 리액션 열심히 하며 맞장구친다.", traits: { F: 1, I: 1 } },
-                    { text: "맛있는 음식에 집중! 묵묵히 요리를 음미한다.", traits: { S: 1, I: 1 } },
+                    { text: "옆 사람 챙겨 주고 리액션 열심히 하며 맞장구친다", traits: { F: 1, I: 1 } },
+                    { text: "맛있는 음식에 집중! 묵묵히 요리를 음미한다", traits: { S: 1, I: 1 } },
                     { text: "사람들 관찰 중... '저 사람은 저런 성격이구나' 분석함", traits: { N: 1, T: 1 } }
                 ]
             },
@@ -110,30 +126,30 @@
                 id: 5,
                 question: "옆 침대 동료가 잠이 안 온다며 말을 걸어온다. 나의 반응은?",
                 options: [
-                    { text: "피곤하지만... 무슨 고민 있어? 끝까지 들어준다.", traits: { F: 2 } },
-                    { text: "따뜻한 우유나 차를 가져다준다. (행동파)", traits: { T: 1, J: 1 } },
-                    { text: "오, 안 그래도 심심했는데! 밤새 수다 떨다 잠듦.", traits: { E: 1, P: 1 } },
-                    { text: "꿈 얘기나 인생 얘기 같은 깊은 주제로 대화가 흘러감.", traits: { N: 2 } }
+                    { text: "피곤하지만... 무슨 고민 있어? 끝까지 얘기를 듣는다", traits: { F: 2 } },
+                    { text: "따뜻한 우유나 차를 가져다 준다", traits: { T: 1, J: 1 } },
+                    { text: "오, 안 그래도 심심했는데! 밤새 수다 떨다 잠듦", traits: { E: 1, P: 1 } },
+                    { text: "꿈 얘기나 인생 얘기 같은 깊은 주제로 대화가 흘러감", traits: { N: 2 } }
                 ]
             },
             {
                 id: 6,
-                question: "자유시간! 리스본에서 가장 가보고 싶은 곳은?",
+                question: "자유 시간! 여행지에서 가장 가보고 싶은 곳은?",
                 options: [
-                    { text: "사람들로 북적이는 시장이나 핫한 파티!", traits: { E: 2 } },
-                    { text: "조용한 서점이나 아무도 없는 해변가 산책.", traits: { I: 2 } },
-                    { text: "역사가 담긴 성당이나 박물관 도슨트 투어.", traits: { T: 1, S: 1 } },
-                    { text: "그냥 예쁜 골목길 돌아다니며 영감 얻기.", traits: { N: 1, F: 1 } }
+                    { text: "사람들로 북적이는 시장이나 핫한 플레이스", traits: { E: 2 } },
+                    { text: "조용한 서점이나 아무도 없는 해변가 산책", traits: { I: 2 } },
+                    { text: "역사가 담긴 성당이나 박물관 도슨트 투어", traits: { T: 1, S: 1 } },
+                    { text: "예쁜 골목길 돌아다니며 영감 얻기", traits: { N: 1, F: 1 } }
                 ]
             },
             {
                 id: 7,
                 question: "팀원과 의견 충돌! 분위기가 싸해졌을 때 나는?",
                 options: [
-                    { text: "일단 내 의견을 논리적으로 딱딱 정리해서 말한다.", traits: { T: 2 } },
-                    { text: "둘 사이를 중재하며 분위기를 유머로 푼다.", traits: { E: 1, F: 1 } },
-                    { text: "상처받을까 봐 말조심하며 상대 기분을 살핀다.", traits: { F: 2 } },
-                    { text: "나중에 따로 불러서 조용히 대화로 푼다.", traits: { I: 1 } }
+                    { text: "일단 내 의견을 논리적으로 딱딱 정리해서 말한다", traits: { T: 2 } },
+                    { text: "사이를 중재하며 분위기를 유머로 푼다", traits: { E: 1, F: 1 } },
+                    { text: "상처받을까 봐 말조심하며 상대 기분을 살핀다", traits: { F: 2 } },
+                    { text: "나중에 따로 불러서 조용히 대화로 푼다", traits: { I: 1 } }
                 ]
             },
             {
@@ -141,9 +157,9 @@
                 question: "멋진 풍경을 봤을 때 내 머릿속에 드는 생각은?",
                 options: [
                     { text: "와, 미쳤다... 너무 예뻐... (감동의 눈물 찔끔 🥺)", traits: { F: 2 } },
-                    { text: "여기서 사진 찍으면 인스타 각이다. 📸", traits: { S: 1, E: 1 } },
-                    { text: "저 건물은 17세기에 지어졌겠지? 구조가 신기하네.", traits: { T: 2 } },
-                    { text: "과거의 사람들도 이 노을을 봤겠지? (아련...)", traits: { N: 2 } }
+                    { text: "여기서 사진 찍으면 인스타 각이다 📸", traits: { S: 1, E: 1 } },
+                    { text: "저 건물은 17세기에 지어졌겠지? 구조가 신기하네", traits: { T: 2 } },
+                    { text: "과거의 사람들도 이 노을을 봤겠지?", traits: { N: 2 } }
                 ]
             },
             {
@@ -151,7 +167,7 @@
                 question: "내일 일정 짤 시간! 어떤 방식이 좋아?",
                 options: [
                     { text: "10:00 기상, 11:00 브런치... 분 단위 계획표!", traits: { J: 2 } },
-                    { text: "일단 '알파마 지구 가기' 큰 틀만 정해두자.", traits: { P: 1 } },
+                    { text: "일단 큰 틀만 정해 두자", traits: { P: 1 } },
                     { text: "그날 날씨랑 기분 보고 정하면 안 돼?", traits: { P: 2 } },
                     { text: "맛집, 교통편, 동선 효율성 체크가 최우선!", traits: { T: 1, J: 1 } }
                 ]
@@ -160,40 +176,40 @@
                 id: 10,
                 question: "여행 중 예상치 못한 비가 쏟아진다! ☔️",
                 options: [
-                    { text: "짜증나... 옷 다 젖겠네. 우산 파는 곳 검색.", traits: { S: 1, T: 1 } },
+                    { text: "짜증 나... 옷 다 젖을 것 같은데? 우산 파는 곳 검색", traits: { S: 1, T: 1 } },
                     { text: "비 오는 리스본도 운치 있다! 빗소리 감상 🎧", traits: { N: 1, F: 1 } },
-                    { text: "실내 일정으로 플랜 B 가동! 당황하지 않는다.", traits: { J: 2 } },
-                    { text: "비 맞고 뛰어! 영화의 한 장면처럼 놀아보자!", traits: { P: 1, E: 1 } }
+                    { text: "실내 일정으로 플랜 B 가동! 당황하지 않는다", traits: { J: 2 } },
+                    { text: "비 맞고 뛰어! 영화의 한 장면처럼 놀아 보자!", traits: { P: 1, E: 1 } }
                 ]
             },
             {
                 id: 11,
                 question: "마지막 날, '당신 집에서 잘 수 있나요?' 질문할 상대를 정해야 한다.",
                 options: [
-                    { text: "가장 마음이 통하고 정서적으로 의지했던 사람.", traits: { F: 2 } },
-                    { text: "배울 점이 많고 대화가 지적으로 통했던 사람.", traits: { T: 2 } },
-                    { text: "제일 재밌고 같이 있으면 시간 가는 줄 모르는 사람.", traits: { E: 1, P: 1 } },
-                    { text: "묵묵히 챙겨줬던 고마운 사람.", traits: { I: 1, S: 1 } }
+                    { text: "가장 마음이 통하고 정서적으로 의지했던 사람", traits: { F: 2 } },
+                    { text: "배울 점이 많고 대화가 지적으로 통했던 사람", traits: { T: 2 } },
+                    { text: "제일 재밌고 같이 있으면 시간 가는 줄 모르는 사람", traits: { E: 1, P: 1 } },
+                    { text: "묵묵히 챙겨줬던 고마운 사람", traits: { I: 1, S: 1 } }
                 ]
             },
             {
                 id: 12,
                 question: "버스 창밖으로 낯선 풍경이 스쳐 지나간다. 당신의 생각은?",
                 options: [
-                    { text: "저 간판 글씨체 특이하네. 저 사람들은 뭘 기다리는 거지? (관찰)", traits: { S: 2 } },
-                    { text: "이 버스는 어디로 가는 걸까... 마치 영화 속 한 장면 같아. (상상)", traits: { N: 2 } },
-                    { text: "다음 정거장은 어디지? 구글맵으로 현 위치 확인.", traits: { S: 1, J: 1 } },
-                    { text: "이 도시에 얽힌 슬픈 사랑 이야기가 있을 것만 같아...", traits: { N: 1, F: 1 } }
+                    { text: "저 간판 글씨체 특이하네. 저 사람들은 뭘 기다리는 거지?", traits: { S: 2 } },
+                    { text: "이 버스는 어디로 가는 걸까... 마치 영화 속 한 장면 같아", traits: { N: 2 } },
+                    { text: "다음 정거장은 어디지? 버스 노선 확인", traits: { S: 1, J: 1 } },
+                    { text: "이 도시에 얽힌 이야기가 있을 것만 같아...", traits: { N: 1, F: 1 } }
                 ]
             },
             {
                 id: 13,
                 question: "친구가 여행 기념품으로 뭘 살지 고민한다. 나의 조언은?",
                 options: [
-                    { text: "가격 대비 퀄리티는 이게 제일 낫네. 이거 사.", traits: { T: 2 } },
-                    { text: "이게 너랑 분위기가 제일 잘 어울려! 딱 네거야.", traits: { F: 2 } },
-                    { text: "한국 가서도 실용적으로 쓸 수 있는 걸로 사야지.", traits: { T: 1, S: 1 } },
-                    { text: "이걸 보면 우리 여행했던 이 순간이 계속 생각날 것 같아.", traits: { F: 1, N: 1 } }
+                    { text: "가격 대비 퀄리티는 이게 제일 낫네 이거 사", traits: { T: 2 } },
+                    { text: "이게 너랑 분위기가 제일 잘 어울려! 딱 네 거야", traits: { F: 2 } },
+                    { text: "한국 가서도 실용적으로 쓸 수 있는 걸로 사야지", traits: { T: 1, S: 1 } },
+                    { text: "이걸 보면 우리 여행했던 이 순간이 계속 생각날 것 같아", traits: { F: 1, N: 1 } }
                 ]
             },
             {
@@ -201,19 +217,19 @@
                 question: "여행지에서의 마지막 밤, 아쉬움을 달래는 방법은?",
                 options: [
                     { text: "이대로 잠들 순 없어! 펍이나 라운지 가서 끝까지 놀자!", traits: { E: 2 } },
-                    { text: "숙소 테라스에서 야경을 보며 조용히 맥주 한 잔.", traits: { I: 2 } },
+                    { text: "숙소 테라스에서 야경을 보며 조용히 맥주 한 잔", traits: { I: 2 } },
                     { text: "오늘 만난 사람들과 연락처 교환하고 인스타 맞팔!", traits: { E: 1, F: 1 } },
-                    { text: "찍은 사진들을 정리하며 일기장에 소감을 남긴다.", traits: { I: 1, J: 1 } }
+                    { text: "찍은 사진들을 정리하며 일기장에 소감을 남긴다", traits: { I: 1, J: 1 } }
                 ]
             },
             {
                 id: 15,
                 question: "여행이 끝나고, 나에게 이 여행은 어떤 의미일까?",
                 options: [
-                    { text: "내 안의 새로운 모습을 발견한 성장 드라마.", traits: { N: 2 } },
-                    { text: "좋은 사람들과 함께 만든 잊지 못할 추억.", traits: { F: 2 } },
-                    { text: "맛있는 거 먹고 푹 쉬다 온 힐링 휴가.", traits: { S: 2 } },
-                    { text: "낯선 곳에서의 생존기를 기록한 다큐멘터리.", traits: { T: 1 } }
+                    { text: "내 안의 새로운 모습을 발견한 성장 드라마", traits: { N: 2 } },
+                    { text: "좋은 사람들과 함께 만든 잊지 못할 추억", traits: { F: 2 } },
+                    { text: "맛있는 거 먹고 푹 쉬다 온 힐링 휴가", traits: { S: 2 } },
+                    { text: "낯선 곳에서의 생존기를 기록한 다큐멘터리", traits: { T: 1 } }
                 ]
             }
         ];
@@ -226,9 +242,9 @@
                 desc: "당신은 겉으로는 차분하고 조용해 보이지만, 그 내면에는 누구보다 깊고 거대한 우주를 품고 있는 사람입니다. 낯선 여행지에서 마주하는 찰나의 감정과 분위기를 소중히 여기며, 그것을 자신만의 방식으로 오롯이 흡수합니다. 말로 다 표현하지 않아도, 특유의 다정한 눈빛과 세심한 배려로 주변 사람들을 편안하게 만드는 능력이 있습니다.",
                 detail: "남들이 무심코 지나치는 골목길의 낡은 간판이나 빗소리에서 아름다움을 발견하는 타입입니다. 시끄러운 파티보다는 마음이 맞는 소수의 사람들과 나누는 깊은 대화를 선호하며, 때로는 혼자만의 시간을 통해 에너지를 충전하는 것이 필요합니다.",
                 partner: "마크",
-                color: "bg-indigo-50 text-indigo-900 border-indigo-200",
-                btnColor: "bg-indigo-400 hover:bg-indigo-500",
-                pointColor: "text-indigo-500",
+                color: "bg-sky-50 text-sky-900 border-sky-200",
+                btnColor: "bg-sky-400 hover:bg-sky-500",
+                pointColor: "text-sky-500",
                 img: "🍑",
                 bgImg: "https://file.notion.so/f/f/d7730641-4164-476a-8752-577644429a34/82904450-4655-4775-8629-23016825501c/8989dbd24565d7bcb7ca80786135e842.jpg?id=28077081-6715-4523-a05e-556768781014&table=block&spaceId=d7730641-4164-476a-8752-577644429a34&expirationTimestamp=1732471200000&signature=_76515107864407544615452001242504452501452314823522315247663146563004536131215516"
             },
@@ -485,12 +501,12 @@
                         <div className="space-y-3.5">
                             {data.options.map((opt, idx) => (
                                 <button
-                                    key={idx}
+                                    key={`${data.id}-${idx}`}
                                     onClick={() => handleClick(idx, opt.traits)}
-                                    className={`w-full text-left p-5 rounded-[20px] border transition-all duration-200 text-[15px] font-medium leading-relaxed animate-slide-up opacity-0 shadow-sm group
-                                        ${selected === idx 
-                                            ? 'bg-sky-50 border-sky-400 text-sky-600 ring-1 ring-sky-400 scale-[0.99]' 
-                                            : 'bg-white border-slate-100 text-slate-600 hover:border-sky-200 hover:bg-sky-50/50 hover:-translate-y-0.5'}
+                                    className={`w-full text-left p-5 rounded-[20px] border transition-all duration-200 text-[15px] font-medium leading-relaxed animate-slide-up opacity-0 shadow-sm group hover-action
+                                    ${selected === idx 
+                                        ? 'bg-sky-50 border-sky-400 text-sky-600 ring-1 ring-sky-400 scale-[0.99]' 
+                                        : 'bg-white border-slate-100 text-slate-600'}
                                     `}
                                     style={{ animationDelay: `${0.2 + (idx * 0.1)}s` }}
                                 >
@@ -528,7 +544,7 @@
                 backgroundPosition: 'center',
             } : {};
 
-            // 링크 복사 기능 (추가됨)
+            // 링크 복사 기능
             const handleShare = () => {
                 const dummy = document.createElement("input");
                 document.body.appendChild(dummy);
@@ -679,6 +695,14 @@
                 setCurrentQIndex(prev => prev - 1);
             };
 
+            // New function to go back to Intro (Home)
+            const goHome = () => {
+                setStep('intro');
+                setCurrentQIndex(0);
+                setScores({ E:0, I:0, N:0, S:0, T:0, F:0, P:0, J:0 });
+                setHistory([]);
+            };
+
             return (
                 <>
                     {step === 'intro' && <Intro onStart={startTest} />}
@@ -692,7 +716,8 @@
                         />
                     )}
                     {step === 'loading' && <Loading />}
-                    {step === 'result' && <Result scores={scores} onRetry={startTest} />}
+                    {/* Pass goHome instead of startTest */}
+                    {step === 'result' && <Result scores={scores} onRetry={goHome} />}
                 </>
             );
         }
