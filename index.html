@@ -55,7 +55,7 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Mobile Hover Fix - Changed to Sky-Pink Gradient Theme */
+        /* Mobile Hover Fix - Sky-Pink Gradient Theme */
         @media (hover: hover) {
             .hover-action:hover {
                 /* sky-50 to pink-50 gradient */
@@ -72,10 +72,15 @@
         }
     </style>
 </head>
+<!-- Centering Fix: flex justify-center items-center ensures the card is centered on large screens -->
 <body class="h-[100dvh] w-full flex justify-center items-center relative text-slate-800 animate-gradient-bg overflow-hidden">
     
-    <!-- Mobile Container -->
-    <div id="root" class="relative z-10 w-full max-w-[420px] h-full sm:h-[90vh] sm:max-h-[850px] sm:rounded-[32px] bg-white/50 backdrop-blur-xl overflow-hidden flex flex-col sm:border-[8px] sm:border-white/40 sm:shadow-2xl"></div>
+    <!-- Main Container 
+         Mobile: w-full h-full (Full Screen)
+         Web (sm): max-w-[420px] h-[85vh] (Centered Card Look)
+         Added sm:border-white/50 for better definition on web
+    -->
+    <div id="root" class="relative z-10 w-full max-w-[420px] h-full sm:h-[85vh] sm:max-h-[850px] sm:rounded-[32px] bg-white/50 backdrop-blur-xl overflow-hidden flex flex-col sm:border-[8px] sm:border-white/50 sm:shadow-2xl transition-all duration-300"></div>
 
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
@@ -372,10 +377,7 @@
                                     <span className="w-2 h-2 rounded-full bg-teal-300 animate-pulse"></span>
                                     BOARDING PASS
                                 </span>
-                                {/* Replaced Text Emoji with SVG for consistent orientation (Up) */}
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 -rotate-90">
-                                    <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-                                </svg>
+                                <span className="text-lg rotate-90">✈️</span>
                             </div>
                             
                             {/* Ticket Body - Centered & Spacious */}
@@ -403,10 +405,7 @@
                                         <p className="text-2xl font-black text-slate-700">HOME</p>
                                     </div>
                                     <div className="flex flex-col items-center justify-center px-2">
-                                        {/* Replaced Text Emoji with SVG for consistent orientation (Right) */}
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-gray-300">
-                                            <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-                                        </svg>
+                                        <span className="text-gray-300 text-lg leading-none rotate-90 sm:rotate-0">✈</span>
                                     </div>
                                     <div className="text-right">
                                         <p className="text-[10px] text-gray-400 font-bold tracking-wider mb-1">TO</p>
@@ -415,7 +414,7 @@
                                 </div>
 
                                 <p className="text-gray-500 text-sm font-medium mb-8 break-keep leading-relaxed mt-auto">
-                                    낯선 도시, 끊어진 연락...<br/>
+                                    낯선 도시, 낯선 여정...<br/>
                                     8명의 여행자 중<br/>
                                     <b>나와 찰떡인 캐릭터</b>는 누구?
                                 </p>
